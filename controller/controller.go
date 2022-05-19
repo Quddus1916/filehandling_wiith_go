@@ -11,6 +11,8 @@ import (
 	"os"
 )
 
+var imagenames []string
+
 type customcontext struct {
 	echo.Context
 }
@@ -38,6 +40,8 @@ func Sendfile(c echo.Context) error {
 		defer src.Close()
 
 		uploadedfilename := file.Filename
+		upname := string(file.Filename)
+		imagenames = append(imagenames, upname)
 		uploadedfilepath := path.Join("./images", uploadedfilename)
 		dst, err := os.Create(uploadedfilepath)
 		if err != nil {
@@ -50,10 +54,9 @@ func Sendfile(c echo.Context) error {
 		}
 
 	}
-	return c.JSON(http.StatusOK, files)
+	return c.JSON(http.StatusOK, imagenames)
 }
 
 func Getfiles(c echo.Context) error {
-	msg := "get file working"
-	return c.JSON(http.StatusOK, msg)
+	return nil
 }
